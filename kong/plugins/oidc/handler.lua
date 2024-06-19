@@ -1,5 +1,5 @@
 local OidcHandler = {
-    VERSION = "1.3.0",
+    VERSION = "1.5.0",
     PRIORITY = 1000,
 }
 local utils = require("kong.plugins.oidc.utils")
@@ -9,6 +9,10 @@ local session = require("kong.plugins.oidc.session")
 
 function OidcHandler:access(config)
   local oidcConfig = utils.get_options(config, ngx)
+  -- if configured cookie access token mode then inject cookie inside request headers
+  if oidcConfig.cookie_access_token then
+    cookieToHeader(oidcConfig)
+  end
 
   -- partial support for plugin chaining: allow skipping requests, where higher priority
   -- plugin has already set the credentials. The 'config.anomyous' approach to define
@@ -26,6 +30,23 @@ function OidcHandler:access(config)
   end
 
   ngx.log(ngx.DEBUG, "OidcHandler done")
+end
+
+function cookieToHeader(oidcConfig)
+    local header_name = oidcConfig.cookie_access_token_header_name_inject
+    local cookie_name = oidcConfig.cookie_access_token_name
+    local cookie = require "resty.cookie"
+
+    local ck = cookie:new()
+    local cookieValue = ck:get(cookie_name)
+
+    if cookieValue then
+        if string.lower(header_name) == "authorization" then
+            ngx.req.set_header("Authorization", "Bearer " .. cookieValue)
+        else
+            ngx.req.set_header(header_name, cookieValue)
+        end
+    end
 end
 
 function handle(oidcConfig)

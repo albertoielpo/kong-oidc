@@ -87,7 +87,10 @@ function M.get_options(config, ngx)
     proxy_opts = {
       http_proxy  = config.http_proxy,
       https_proxy = config.https_proxy
-    }
+    },
+    cookie_access_token = config.cookie_access_token == "yes",
+    cookie_access_token_name = config.cookie_access_token_name,
+    cookie_access_token_header_name_inject = config.cookie_access_token_header_name_inject
   }
 end
 

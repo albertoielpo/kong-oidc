@@ -1,5 +1,14 @@
 # What is Kong OIDC plugin
 
+## Note
+This code is forked from https://github.com/revomatico/kong-oidc and is added the `cookie access token` functionality.
+
+If enabled is possible to use a cookie to pass the bearer instead of http header.
+
+This code is open for extentions, feel free to fork your own copy.
+
+I am not mantaining existing issues, nor I would like to add functionalities to this repo.
+
 [![Join the chat at https://gitter.im/nokia/kong-oidc](https://badges.gitter.im/nokia/kong-oidc.svg)](https://gitter.im/nokia/kong-oidc?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 **Continuous Integration:** [![Build Status](https://travis-ci.org/nokia/kong-oidc.svg?branch=master)](https://travis-ci.org/nokia/kong-oidc)
@@ -107,6 +116,9 @@ If you're using `luarocks` execute the following:
 | `config.header_claims`                      |                                            | false    | List of claims to be used as source for custom upstream headers. Claims are sourced from Userinfo, ID Token, Bearer JWT, Introspection, depending on auth method.  Use only claims containing simple string values. Example: `[ 'email', 'email_verified'` |
 | `config.http_proxy` || false | http proxy url |
 | `config.https_proxy` || false | https proxy url (only supports url format __http__://proxy and not __https__://proxy) |
+| `config.cookie_access_token` |`no`| false | if `yes` the access token is searched inside `cookie_access_token_name` |
+| `config.cookie_access_token_name` |`token`| false | Cookie name in which access token is sent |
+| `config.cookie_access_token_header_name_inject` |`authorization`| false | The header name in which the access token sent in the cookie is inject. In case of `authorization` then the `bearer` keyword is automatically set. Example: `Cookie: token=xyz` will produce `Authorization: bearer xyz` |
 
 ### Enabling kong-oidc
 

@@ -305,6 +305,27 @@ return {
               type = "string",
               required = false
             }
+          },
+          {
+            cookie_access_token = {
+              type = "string",
+              required = false,
+              default = "no"
+            }
+          },
+          {
+            cookie_access_token_name = {
+              type = "string",
+              required = false,
+              default = "token"
+            }
+          },
+          {
+            cookie_access_token_header_name_inject = {
+              type = "string",
+              required = false,
+              default = "authorization"
+            }
           }
         }
       }
